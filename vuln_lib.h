@@ -10,3 +10,7 @@ char *buffer_alloc(size_t size);
 void buffer_free(char *buf);
 
 #endif /* VULN_LIB_H */
+
+/* Parse a length-prefixed buffer: first 4 bytes = length (network byte order) */
+int buffer_parse_length_prefixed(const char *input, size_t input_len,
+                                  char *out, size_t out_size);
