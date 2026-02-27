@@ -3,7 +3,7 @@
 #include <string.h>
 
 int buffer_copy(char *dst, size_t dst_size, const char *src) {
-    if (!dst || !src) return -1;
+    if (!dst || !src || dst_size == 0) return -1;
     strncpy(dst, src, dst_size - 1);
     dst[dst_size - 1] = '\0';
     return 0;
@@ -18,7 +18,10 @@ int buffer_concat(char *dst, size_t dst_size, const char *src) {
 }
 
 char *buffer_alloc(size_t size) {
-    return (char *)malloc(size);
+    if (size == 0) return NULL;
+    char *buf = (char *)malloc(size);
+    if (buf) memset(buf, 0, size);
+    return buf;
 }
 
 void buffer_free(char *buf) {
