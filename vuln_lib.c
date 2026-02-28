@@ -60,7 +60,8 @@ struct buffer_pool *pool_create(int capacity) {
 }
 
 int pool_add(struct buffer_pool *p, const char *data, size_t len) {
-    if (!p || p->count >= p->capacity) return -1;
+    if (!p || !data || p->count >= p->capacity) return -1;
+    if (len >= SIZE_MAX) return -1;
     char *buf = malloc(len + 1);
     if (!buf) return -1;
     memcpy(buf, data, len);
