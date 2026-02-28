@@ -75,6 +75,7 @@ void pool_remove(struct buffer_pool *p, int index) {
     /* shift remaining entries left */
     for (int i = index; i < p->count - 1; i++)
         p->entries[i] = p->entries[i + 1];
+    p->entries[p->count - 1] = NULL;
     p->count--;
 }
 
