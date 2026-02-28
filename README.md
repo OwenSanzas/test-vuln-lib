@@ -1,3 +1,3 @@
 # test-vuln-lib
 
-A simple C buffer operations library for testing VulnSentinel pipeline.
+A simple C buffer operations library for testing the VulnSentinel pipeline.
