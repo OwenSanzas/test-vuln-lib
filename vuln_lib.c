@@ -36,7 +36,7 @@ int buffer_parse_length_prefixed(const char *input, size_t input_len,
     uint32_t payload_len;
     memcpy(&payload_len, input, 4);
     payload_len = ntohl(payload_len);
-    /* BUG: missing check that payload_len <= input_len - 4 */
+    /* TODO: missing check that payload_len <= input_len - 4 */
     if (payload_len > out_size) return -1;
     memcpy(out, input + 4, payload_len);
     return (int)payload_len;
