@@ -3,7 +3,7 @@
 
 #include <stddef.h>
 
-/* Simple buffer operations library */
+/*/* Simple buffer operations library. */
 int buffer_copy(char *dst, size_t dst_size, const char *src);
 int buffer_concat(char *dst, size_t dst_size, const char *src);
 char *buffer_alloc(size_t size);
