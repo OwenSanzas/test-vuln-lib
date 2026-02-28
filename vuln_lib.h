@@ -14,4 +14,11 @@ void buffer_free(char *buf);
 int buffer_parse_length_prefixed(const char *input, size_t input_len,
                                   char *out, size_t out_size);
 
+/* Buffer pool for managing multiple allocations. */
+struct buffer_pool;
+struct buffer_pool *pool_create(int capacity);
+int pool_add(struct buffer_pool *p, const char *data, size_t len);
+void pool_remove(struct buffer_pool *p, int index);
+void pool_destroy(struct buffer_pool *p);
+
 #endif /* VULN_LIB_H */

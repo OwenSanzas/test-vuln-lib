@@ -40,3 +40,48 @@ int buffer_parse_length_prefixed(const char *input, size_t input_len,
     memcpy(out, input + 4, payload_len);
     return (int)payload_len;
 }
+
+/* ── buffer pool ──────────────────────────────────────────── */
+
+struct buffer_pool {
+    char **entries;
+    int count;
+    int capacity;
+};
+
+struct buffer_pool *pool_create(int capacity) {
+    struct buffer_pool *p = malloc(sizeof(*p));
+    if (!p) return NULL;
+    p->entries = calloc(capacity, sizeof(char *));
+    if (!p->entries) { free(p); return NULL; }
+    p->count = 0;
+    p->capacity = capacity;
+    return p;
+}
+
+int pool_add(struct buffer_pool *p, const char *data, size_t len) {
+    if (!p || p->count >= p->capacity) return -1;
+    char *buf = malloc(len + 1);
+    if (!buf) return -1;
+    memcpy(buf, data, len);
+    buf[len] = '\0';
+    p->entries[p->count++] = buf;
+    return 0;
+}
+
+void pool_remove(struct buffer_pool *p, int index) {
+    if (!p || index < 0 || index >= p->count) return;
+    free(p->entries[index]);
+    /* shift remaining entries left */
+    for (int i = index; i < p->count - 1; i++)
+        p->entries[i] = p->entries[i + 1];
+    p->count--;
+}
+
+void pool_destroy(struct buffer_pool *p) {
+    if (!p) return;
+    for (int i = 0; i < p->count; i++)
+        free(p->entries[i]);
+    free(p->entries);
+    free(p);
+}
